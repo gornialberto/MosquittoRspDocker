@@ -1,0 +1,5 @@
+FROM resin/rpi-raspbian
+
+MAINTAINER Alberto Gorni <gorni.alberto@gmail.com>
+
+LABEL Description="Eclipse Mosquitto MQTT Broker for Raspian"
