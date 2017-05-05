@@ -15,6 +15,4 @@ RUN apt-get update && apt-get install wget && \
     cp /etc/mosquitto/mosquitto.conf /mosquitto/config && \
     chown -R mosquitto:mosquitto /mosquitto
 
-COPY docker-entrypoint.sh /
-ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["/usr/sbin/mosquitto", "-c", "/mosquitto/config/mosquitto.conf"]
