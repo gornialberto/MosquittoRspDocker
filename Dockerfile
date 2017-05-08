@@ -1,9 +1,8 @@
 FROM resin/rpi-raspbian
 
-MAINTAINER gornialberto <gorni.alberto@gmail.com>
+LABEL maintainer="gornialberto@gmail.com" Description="Mosquitto MQTT Broker for Raspian"
 
-LABEL Description="Eclipse Mosquitto MQTT Broker for Raspian"
-
+#add the mosquitto repository, install it and create the data and log foldoer to be shared later as volumes with the host
 RUN apt-get update && apt-get install wget && \
     wget http://repo.mosquitto.org/debian/mosquitto-repo.gpg.key && \
     sudo apt-key add mosquitto-repo.gpg.key && \
@@ -11,8 +10,11 @@ RUN apt-get update && apt-get install wget && \
     sudo wget http://repo.mosquitto.org/debian/mosquitto-jessie.list && \
     apt-get update && \
     apt-get install mosquitto && \
-    mkdir -p /mosquitto/config /mosquitto/data /mosquitto/log && \
-    cp /etc/mosquitto/mosquitto.conf /mosquitto/config && \
+    mkdir -p /mosquitto/data /mosquitto/log && \
     chown -R mosquitto:mosquitto /mosquitto
 
-CMD ["/usr/sbin/mosquitto", "-c", "/mosquitto/config/mosquitto.conf"]
+#overwrite the standard configuration
+COPY mosquitto.conf /etc/mosquitto/
+
+#run mosquitto (it will use the standard configuration raplaced)
+CMD ["/usr/sbin/mosquitto"]
